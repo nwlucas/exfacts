@@ -80,6 +80,12 @@ defmodule ExFacts.Utils do
   end
 
   @doc """
+  Reads in a file at the path provided in the binary using the binread method. This allows
+  the caller to be able to read files that are provided by kernal calls that are not usual
+  files.
+
+  If `sane: true` is passed then read in data is also split by new line characters and
+  returned as a list of each line.
   """
   @type option :: {:sane, boolean}
   @spec read_file(binary, options :: [option]) :: [binary]
@@ -104,8 +110,7 @@ defmodule ExFacts.Utils do
     filtered
   end
 
-  @doc """
-  """
+  @doc false
   @spec sanitize_data(binary) :: any
   def sanitize_data("" = data) when is_binary(data), do: ""
   def sanitize_data("\n" = newline) when is_binary(newline), do: ""
