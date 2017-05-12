@@ -1,19 +1,30 @@
-# TuxSentry.Facts
-
-**TODO: Add description**
+# ExFacts
+==========
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `facts` to your list of dependencies in `mix.exs`:
-
 ```elixir
 def deps do
-  [{:facts, "~> 0.1.0"}]
+  [{:exfacts, "~> 0.1.2"}]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/facts](https://hexdocs.pm/facts).
+## Usage
+In general you can use the `Facts.get_external_facts/0` or `Facts.get_system_facts/0`. Those function will return JSON data with all fields normalized and containing the data in them.
 
+```elixir
+defmodule SomeModule do
+
+  def some_function do
+    Facts.get_external_facts
+  end
+
+  def other_function do
+    Facts.get_system_facts
+  end
+end
+```
+
+## Documentation
+
+Online documentation can be found at [https://hexdocs.pm/exfacts](https://hexdocs.pm/exfacts).
