@@ -1,4 +1,4 @@
-defmodule Facts.Disk.IOCounterStat do
+defmodule ExFacts.Disk.IOCounterStat do
   @moduledoc """
     Provides a struct to hold IO counters data.
 
@@ -10,7 +10,7 @@ defmodule Facts.Disk.IOCounterStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %Facts.Disk.IOCounterStat{
+  @type t :: %ExFacts.Disk.IOCounterStat{
     read_count: float,
     merged_read_count: float,
     write_count: float,

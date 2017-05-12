@@ -1,16 +1,16 @@
-defmodule Facts.Mem.SwapMemStat do
+defmodule ExFacts.Mem.SwapMemStat do
   @moduledoc """
     Provides a struct to hold virtual memory data.
 
     ##Examples
 
-    iex> sm = %Facts.Mem.SwapMemStat{total: 320000, used: 6000, free: 26000}
+    iex> sm = %ExFacts.Mem.SwapMemStat{total: 320000, used: 6000, free: 26000}
     ...> sm.free
     26000
   """
   @derive [Poison.Encoder]
 
-  @type t :: %Facts.Mem.SwapMemStat {
+  @type t :: %ExFacts.Mem.SwapMemStat {
     total: integer,
     used: integer,
     used_percent: float,

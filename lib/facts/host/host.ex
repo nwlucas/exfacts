@@ -1,7 +1,7 @@
-defmodule Facts.Host do
+defmodule ExFacts.Host do
   @moduledoc """
   """
-  import Facts.Utils
+  import ExFacts.Utils
   require Logger
 
   def host_info do
@@ -10,7 +10,7 @@ defmodule Facts.Host do
     {system, role} = virtualization()
     {_os_family, os_name} = :os.type()
 
-    %Facts.Host.InfoStat{
+    %ExFacts.Host.InfoStat{
       hostname: hostname(),
       uptime: up_time(b),
       bootime: b,
@@ -33,7 +33,7 @@ defmodule Facts.Host do
   # have been updated.
 
   @spec counts :: integer
-  defp counts do
+  def counts do
    case System.cmd "nproc", [] do
      {k, 0} ->
         String.to_integer(String.replace(k, "\n", ""))
@@ -42,7 +42,7 @@ defmodule Facts.Host do
   end
 
   @spec hostname :: String.t
-  defp hostname do
+  def hostname do
    case System.cmd "hostname", [] do
      {k, 0} ->
         String.replace(k, "\n", "")
@@ -53,7 +53,7 @@ defmodule Facts.Host do
   end
 
   @spec host_id :: String.t
-  defp host_id do
+  def host_id do
     contents = System.cmd "sudo", ["cat", "/sys/class/dmi/id/product_uuid"]
 
     case contents do
@@ -66,7 +66,7 @@ defmodule Facts.Host do
   end
 
   @spec boot_time :: integer
-  defp boot_time do
+  def boot_time do
     filename = host_proc("stat")
 
     try do
@@ -87,10 +87,10 @@ defmodule Facts.Host do
   end
 
   @spec up_time(integer) :: integer
-  defp up_time(b), do: System.system_time(:millisecond) - b
+  def up_time(b), do: System.system_time(:millisecond) - b
 
   @spec platform_info :: {binary, binary}
-  defp platform_info do
+  def platform_info do
     try do
       lsb = get_lsb()
 
@@ -164,7 +164,7 @@ defmodule Facts.Host do
   end
 
   @spec get_os_release :: {String.t, String.t}
-  defp get_os_release do
+  def get_os_release do
     filename = host_etc("os-release")
 
     try do
@@ -182,8 +182,8 @@ defmodule Facts.Host do
     end
   end
 
-  @spec get_lsb :: %Facts.Host.LSB{}
-  defp get_lsb do
+  @spec get_lsb :: %ExFacts.Host.LSB{}
+  def get_lsb do
     lsb =
       if File.exists?(host_etc("lsb-release")), do: get_lsb_release()
       if File.exists?("/usr/bin/lsb_release"), do: get_lsb_from_bin()
@@ -191,8 +191,8 @@ defmodule Facts.Host do
     lsb
   end
 
-  @spec get_lsb_release :: %Facts.Host.LSB{}
-  defp get_lsb_release do
+  @spec get_lsb_release :: %ExFacts.Host.LSB{}
+  def get_lsb_release do
     lines =
       "lsb-release"
       |> host_etc()
@@ -204,7 +204,7 @@ defmodule Facts.Host do
             Enum.fetch!(tl(x), 0)
           } end)
 
-    %Facts.Host.LSB{
+    %ExFacts.Host.LSB{
       id: lines[:ID],
       release: lines[:RELEASE],
       codename: lines[:CODENAME],
@@ -214,11 +214,11 @@ defmodule Facts.Host do
 
   # Todo. This function has only been fleshed out and I already know there are validation issues with it.
   # WIP needs to be properly written to handle cleanup of spaces and cases.
-  defp get_lsb_from_bin do
+  def get_lsb_from_bin do
     {lines, _} = System.cmd "/usr/bin/lsb_release", []
 
     case lines do
-      "" -> %Facts.Host.LSB{id: "", release: "", codename: "", description: ""}
+      "" -> %ExFacts.Host.LSB{id: "", release: "", codename: "", description: ""}
       _ ->
         ret =
           lines
@@ -230,7 +230,7 @@ defmodule Facts.Host do
                   String.to_atom(hd(x)), Enum.fetch!(tl(x), 0)
                 } end)
 
-        %Facts.Host.LSB{
+        %ExFacts.Host.LSB{
           id: ret[:distributor_id],
           release: ret[:release],
           codename: ret[:codename],
@@ -240,7 +240,7 @@ defmodule Facts.Host do
   end
 
   @spec kernel_version :: String.t
-  defp kernel_version do
+  def kernel_version do
     filename = host_proc("/sys/kernel/osrelease")
     contents = if File.exists?(filename), do: hd(read_file(filename, sane: true)), else: ""
 
@@ -249,7 +249,7 @@ defmodule Facts.Host do
 
   @type option :: {:type, binary}
   @spec get_version(binary, options :: [option]) :: binary
-  defp get_version(data, opts \\ [type: "redhat"]) do
+  def get_version(data, opts \\ [type: "redhat"]) do
 
     redhat_regex = ~r/release (?<version>\d[\d.]*)/
     suse_v_regex = ~r/VERSION = (?<version>[\d.]+)/
@@ -269,7 +269,7 @@ defmodule Facts.Host do
   end
 
   @spec get_platform(binary, options :: [option]) :: binary
-  defp get_platform(data, opts \\ [type: "redhat"]) do
+  def get_platform(data, opts \\ [type: "redhat"]) do
     data = String.downcase(data)
     platform = case opts[:type] do
       "redhat" -> if String.contains?(data, "red hat"), do: "redhat", else: data |> String.splitter([" "], trim: true) |> Enum.take(1)
@@ -280,7 +280,7 @@ defmodule Facts.Host do
   end
 
   @spec get_family(String.t) :: String.t
-  defp get_family(p) do
+  def get_family(p) do
     case p do
       dist when dist in ["debian", "ubuntu", "linuxmint", "raspbian"] -> "debian"
       dist when dist in ["oracle", "centos", "redhat", "scientific", "enterpriseenterprise", "amazon", "xenserver", "cloudlinux", "ibm_powerkvm"] -> "rhel"
@@ -297,7 +297,7 @@ defmodule Facts.Host do
   end
 
   @spec virtualization :: {String.t, String.t}
-  defp virtualization do
+  def virtualization do
     xen_file = host_proc("xen")
     modules_file = host_proc("modules")
     cpu_file = host_proc("cpuinfo")

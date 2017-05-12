@@ -1,16 +1,16 @@
-defmodule Facts.Load.MiscStat do
+defmodule ExFacts.Load.MiscStat do
   @moduledoc """
     Provides a struct to hold miscellaneous data.
 
     ##Examples
 
-      iex> m = %Facts.Load.MiscStat{procs_running: 192, procs_blocked: 5, ctxt: 242}
+      iex> m = %ExFacts.Load.MiscStat{procs_running: 192, procs_blocked: 5, ctxt: 242}
       ...> m.procs_blocked
       5
   """
   @derive [Poison.Encoder]
 
-  @type t :: %Facts.Load.MiscStat {
+  @type t :: %ExFacts.Load.MiscStat {
     procs_running: integer,
     procs_blocked: integer,
     ctxt: integer

@@ -1,9 +1,9 @@
-defmodule Facts.UtilsTest do
-  import Facts.Utils
+defmodule exFacts.UtilsTest do
+  import ExFacts.Utils
   use ExUnit.Case
-  doctest Facts.Utils
+  doctest ExFacts.Utils
 
-  describe "Test functionality of Facts.Utils" do
+  describe "Test functionality of ExFacts.Utils" do
     test "proper path to proc in host_proc/0" do
       assert "/proc" = host_proc()
     end

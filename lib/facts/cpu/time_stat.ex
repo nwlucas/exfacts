@@ -1,4 +1,4 @@
-defmodule Facts.CPU.TimesStat do
+defmodule ExFacts.CPU.TimesStat do
   @moduledoc """
     Provides a struct to hold CPU data.
 

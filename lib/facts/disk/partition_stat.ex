@@ -1,4 +1,4 @@
-defmodule Facts.Disk.PartitionStat do
+defmodule ExFacts.Disk.PartitionStat do
   @moduledoc """
     Provides a struct to hold Partition data.
 
@@ -10,7 +10,7 @@ defmodule Facts.Disk.PartitionStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %Facts.Disk.PartitionStat{
+  @type t :: %ExFacts.Disk.PartitionStat{
     device: binary,
     mount_point: binary,
     fs_type: binary,

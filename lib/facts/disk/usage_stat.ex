@@ -1,4 +1,4 @@
-defmodule Facts.Disk.UsageStat do
+defmodule ExFacts.Disk.UsageStat do
   @moduledoc """
     Provides a struct to hold usage data.
 
@@ -10,7 +10,7 @@ defmodule Facts.Disk.UsageStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %Facts.Disk.UsageStat{
+  @type t :: %ExFacts.Disk.UsageStat{
     path: binary,
     fs_type: binary,
     total: float,

@@ -1,8 +1,8 @@
-defmodule Facts.Mem do
+defmodule ExFacts.Mem do
   @moduledoc """
   """
-  alias Facts.Mem.{VirtualMemStat, SwapMemStat}
-  import Facts.Utils
+  alias ExFacts.Mem.{VirtualMemStat, SwapMemStat}
+  import ExFacts.Utils
   require Logger
 
   @byte_multiplier 1024
@@ -16,7 +16,7 @@ defmodule Facts.Mem do
     %{v_mem: virtual_memory(mem_info), s_mem: swap_memory(mem_info)}
   end
 
-  @spec virtual_memory(map) :: %Facts.Mem.VirtualMemStat{}
+  @spec virtual_memory(map) :: %ExFacts.Mem.VirtualMemStat{}
   def virtual_memory(data) do
     avail = determine_avail_mem(data)
 
@@ -40,7 +40,7 @@ defmodule Facts.Mem do
     }
   end
 
-  @spec swap_memory(map) :: %Facts.Mem.SwapMemStat{}
+  @spec swap_memory(map) :: %ExFacts.Mem.SwapMemStat{}
   def swap_memory(data) do
     filename = host_proc("vmstat")
 
@@ -83,7 +83,7 @@ defmodule Facts.Mem do
     {String.to_atom(k), String.to_integer(v) * @byte_multiplier}
   end
 
-  defp determine_avail_mem(data) do
+  def determine_avail_mem(data) do
     case Map.has_key?(data, :memavailable) do
       false -> data.memfree + data.buffers + data.cached
       true -> data.memavailable

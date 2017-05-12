@@ -1,16 +1,16 @@
-defmodule Facts.Mem.VirtualMemStat do
+defmodule ExFacts.Mem.VirtualMemStat do
   @moduledoc """
     Provides a struct to hold virtual memory data.
 
     ##Examples
 
-    iex> vm = %Facts.Mem.VirtualMemStat{total: 320000, buffers: 15000, dirty: 2000}
+    iex> vm = %ExFacts.Mem.VirtualMemStat{total: 320000, buffers: 15000, dirty: 2000}
     ...> vm.buffers
     15000
   """
   @derive [Poison.Encoder]
 
-  @type t :: %Facts.Mem.VirtualMemStat {
+  @type t :: %ExFacts.Mem.VirtualMemStat {
     total: integer,
     available: integer,
     used: integer,

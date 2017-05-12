@@ -1,13 +1,14 @@
-defmodule Facts.CPU do
+defmodule ExFacts.CPU do
   @moduledoc """
-
-  `Facts.CPU` handles all logic with regards to collecting metrics on the CPUs of the host.
-
+  Handles all logic with regards to collecting metrics on the CPUs of the host. Returns a `ExFactsCPU.InfoStat` populated struct.
   """
-  alias Facts.CPU.{InfoStat, TimeStat}
-  import Facts.Utils
+  alias ExFacts.CPU.{InfoStat, TimeStat}
+  import ExFacts.Utils
   require Logger
 
+  @doc """
+  Returns the integer number of processors that on the host.
+  """
   @spec counts :: integer
   def counts do
    case System.cmd "nproc", [] do
@@ -21,22 +22,29 @@ defmodule Facts.CPU do
   def cpu_info do
     filename = host_proc("cpuinfo")
     file = File.open!(filename)
-    data =
-      file
-       |> IO.binstream(:line)
-       |> Enum.map(& sanitize_data(&1))
-       |> Enum.map(& normalize_with_underscore(&1))
-       |> Enum.map(& finish_info(&1))
-       |> delete_all(%{})
-       |> split_data()
-       |> Enum.map(& flatten_info(&1))
-       |> Enum.map(& populate_info(&1))
 
-    {:ok, data}
+    try do
+      data =
+        file
+         |> IO.binstream(:line)
+         |> Enum.map(& sanitize_data(&1))
+         |> Enum.map(& normalize_with_underscore(&1))
+         |> Enum.map(& finish_info(&1))
+         |> delete_all(%{})
+         |> split_data()
+         |> Enum.map(& flatten_info(&1))
+         |> Enum.map(& populate_info(&1))
+
+      data
+    catch
+      e ->  Logger.error "Error occured while attempting to collect CPU infomation. Error: " <> e
+    after
+      %InfoStat{}
+    end
   end
 
   @spec split_data(original :: list) :: list
-  defp split_data(data) do
+  def split_data(data) do
     i =
       data
         |> Enum.with_index
@@ -47,24 +55,24 @@ defmodule Facts.CPU do
   end
 
   @spec split_data(original :: list, interval :: integer) :: list
-  defp split_data(data, i) do
+  def split_data(data, i) do
     Enum.chunk(data, i)
   end
 
   @spec flatten_info(list, map) :: map
-  defp flatten_info(list, m \\ %{})
-  defp flatten_info([], m), do: m
-  defp flatten_info(list, m), do: flatten_info(tl(list), Map.merge(m, hd(list)))
+  def flatten_info(list, m \\ %{})
+  def flatten_info([], m), do: m
+  def flatten_info(list, m), do: flatten_info(tl(list), Map.merge(m, hd(list)))
 
   @spec finish_info(map) :: map
-  defp finish_info(data) when is_map(data) do
+  def finish_info(data) when is_map(data) do
     for {key, val} <- data, into: %{} do
       {String.to_atom(String.trim_leading(key, "cpu_")),  String.trim(val)}
     end
   end
 
-  @spec populate_info(map) :: %Facts.CPU.InfoStat{}
-  defp populate_info(data) when is_map(data) do
+  @spec populate_info(map) :: %ExFacts.CPU.InfoStat{}
+  def populate_info(data) when is_map(data) do
     cd =  for {key, val} <- data, into: %{} do
             case key do
               :processor -> {:cpu, String.to_integer(val)}
@@ -80,8 +88,4 @@ defmodule Facts.CPU do
           end
     struct(InfoStat, cd)
   end
-
-#    defp populate_time(data) when is_list(data) do
-#
-#    end
 end

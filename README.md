@@ -10,17 +10,18 @@ end
 ```
 
 ## Usage
-In general you can use the `Facts.get_external_facts/0` or `Facts.get_system_facts/0`. Those function will return JSON data with all fields normalized and containing the data in them.
+In general you can use the `get_external_facts/0` or `get_system_facts/0`. Those function will return JSON data with all fields normalized and containing the data in them.
 
 ```elixir
 defmodule SomeModule do
+  use ExFacts
 
   def some_function do
-    Facts.get_external_facts
+    data = get_external_facts()
   end
 
   def other_function do
-    Facts.get_system_facts
+    data = get_system_facts()
   end
 end
 ```

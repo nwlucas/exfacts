@@ -1,4 +1,4 @@
-defmodule Facts.Net do
+defmodule ExFacts.Net do
   @moduledoc """
   """
 

@@ -1,4 +1,4 @@
-defmodule Facts.Constants do
+defmodule ExFacts.Constants do
   @moduledoc """
   An alternative to use @constant_name value approach to defined reusable
   constants in elixir.
@@ -23,7 +23,7 @@ defmodule Facts.Constants do
 
   defmacro __using__(_opts) do
     quote do
-      import Facts.Constants
+      import ExFacts.Constants
     end
   end
 

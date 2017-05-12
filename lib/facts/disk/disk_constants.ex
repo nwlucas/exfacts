@@ -1,6 +1,8 @@
-defmodule Facts.Disk.Constants do
-  use Facts.Constants
-  @moduledoc false
+defmodule ExFacts.Disk.Constants do
+  use ExFacts.Constants
+  @moduledoc """
+  Constants commonly used for filesystem identification.
+  """
 
   const :sector_size, 512
 

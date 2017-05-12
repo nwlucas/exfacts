@@ -1,8 +1,8 @@
-defmodule Facts.Load do
+defmodule ExFacts.Load do
   @moduledoc """
   """
-  alias Facts.Load.{AvgStat, MiscStat}
-  import Facts.Utils
+  alias ExFacts.Load.{AvgStat, MiscStat}
+  import ExFacts.Utils
   require Logger
 
   def avg do

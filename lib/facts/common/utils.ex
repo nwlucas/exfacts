@@ -1,45 +1,62 @@
-defmodule Facts.Utils do
+defmodule ExFacts.Utils do
   @moduledoc """
-
-  `Facts.Utils` contains common logic that is used mostly internally by other modules.
-
+  Contains common logic that is used mostly internally by other modules.
   """
-  @spec host_proc :: binary
-  def host_proc, do: Path.absname("/proc")
 
-  @spec host_proc(binary) :: binary
-  def host_proc(combine_with)  when is_binary(combine_with) do
-    if is_nil(System.get_env("HOST_PROC")) do
-      Path.join("/proc", combine_with)
-    else
-      Path.join(System.get_env("HOST_PROC"), combine_with)
-    end
-  end
+  @etc_path Application.get_env(:exfacts, :etc_path, "/etc")
+  @proc_path Application.get_env(:exfacts, :proc_path, "/proc")
+  @sys_path Application.get_env(:exfacts, :sys_path, "/sys")
 
-  @spec host_sys :: binary
-  def host_sys, do: Path.absname("/sys")
-
-  @spec host_sys(binary) :: binary
-  def host_sys(combine_with)  when is_binary(combine_with) do
-    if is_nil(System.get_env("HOST_SYS")) do
-      Path.join("/sys", combine_with)
-    else
-      Path.join(System.get_env("HOST_SYS"), combine_with)
-    end
-  end
-
+  @doc """
+  """
   @spec host_etc :: binary
-  def host_etc, do: Path.absname("/etc")
+  def host_etc, do: Path.absname(@etc_path)
 
+  @doc """
+  """
   @spec host_etc(binary) :: binary
   def host_etc(combine_with)  when is_binary(combine_with) do
     if is_nil(System.get_env("HOST_ETC")) do
-      Path.join("/etc", combine_with)
+      Path.join(@etc_path, combine_with)
     else
       Path.join(System.get_env("HOST_ETC"), combine_with)
     end
   end
 
+  @doc """
+  """
+  @spec host_proc :: binary
+  def host_proc, do: Path.absname(@proc_path)
+
+  @doc """
+  """
+  @spec host_proc(binary) :: binary
+  def host_proc(combine_with)  when is_binary(combine_with) do
+    if is_nil(System.get_env("HOST_PROC")) do
+      Path.join(@proc_path, combine_with)
+    else
+      Path.join(System.get_env("HOST_PROC"), combine_with)
+    end
+  end
+
+  @doc """
+  """
+  @spec host_sys :: binary
+  def host_sys, do: Path.absname(@sys_path)
+
+  @doc """
+  """
+  @spec host_sys(binary) :: binary
+  def host_sys(combine_with)  when is_binary(combine_with) do
+    if is_nil(System.get_env("HOST_SYS")) do
+      Path.join(@sys_path, combine_with)
+    else
+      Path.join(System.get_env("HOST_SYS"), combine_with)
+    end
+  end
+
+  @doc """
+  """
   @type option :: {:sane, boolean}
   @spec read_file(binary, options :: [option]) :: [binary]
   def read_file(filename, options \\ []) do
@@ -63,6 +80,8 @@ defmodule Facts.Utils do
     filtered
   end
 
+  @doc """
+  """
   @spec sanitize_data(binary) :: any
   def sanitize_data("" = data) when is_binary(data), do: ""
   def sanitize_data("\n" = newline) when is_binary(newline), do: ""
@@ -75,6 +94,8 @@ defmodule Facts.Utils do
     Map.put(%{}, k, v)
   end
 
+  @doc """
+  """
   @spec normalize_with_underscore(map) :: map
   def normalize_with_underscore(item) when is_map(item) do
     k = item
@@ -85,6 +106,8 @@ defmodule Facts.Utils do
     Map.new([{k, hd(Map.values(item))}])
   end
 
+  @doc """
+  """
   @spec normalize_with_underscore(tuple) :: tuple
   def normalize_with_underscore(item) when is_tuple(item) do
     k =
@@ -97,12 +120,15 @@ defmodule Facts.Utils do
     {k, elem(item, 1)}
   end
 
+  @doc """
+  """
   @spec normalize_with_underscore(binary) :: map
   def normalize_with_underscore("" = item) when is_binary(item), do: %{}
 
+  @doc """
+  """
   @spec delete_all(list, any) :: list
   def delete_all(list, value) do
     Enum.filter(list, & &1 !== value)
   end
-
 end

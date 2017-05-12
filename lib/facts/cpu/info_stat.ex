@@ -1,4 +1,4 @@
-defmodule Facts.CPU.InfoStat do
+defmodule ExFacts.CPU.InfoStat do
   @moduledoc """
     Provides a struct to hold CPU data.
 
@@ -10,7 +10,7 @@ defmodule Facts.CPU.InfoStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %Facts.CPU.InfoStat{
+  @type t :: %ExFacts.CPU.InfoStat{
     cpu: integer,
     vendor_id: binary,
     family: binary,
