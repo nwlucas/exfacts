@@ -3,14 +3,15 @@ defmodule Facts.Mixfile do
 
   def project do
     [
-      app: :facts,
-      version: "0.1.0",
+      app: :exfacts,
+      version: "0.1.2",
       build_path: "_build",
       config_path: "config/config.exs",
       deps_path: "deps",
       lockfile: "mix.lock",
       elixir: "~> 1.4",
       description: "A library for collection a variety of system facts.",
+      source_url: "https://github.com/nwlucas/exfacts",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps(),
@@ -32,16 +33,18 @@ defmodule Facts.Mixfile do
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README.md", "LICENSE.md"],
+      name: :exfacts,
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Nigel Williams-Lucas"],
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/nwlucas/facts"}
+      links: %{"GitHub" => "https://github.com/nwlucas/exfacts"}
     ]
   end
 
   defp deps do
     [
-      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:ex_doc, "~> 0.15.1", only: :dev},
+      {:earmark, "~> 1.2.2", only: :dev},
       {:poison, "~> 3.0"},
       {:porcelain, "~> 2.0"},
       {:excoveralls, "~> 0.6", only: :test}
