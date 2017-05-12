@@ -90,6 +90,7 @@ defmodule ExFacts.Utils do
       data
         |> (&Regex.replace(~r/(\t|\n)+/, &1, "")).()
         |> String.split(":", trim: true)
+        |> Enum.map(& String.trim(&1))
 
     Map.put(%{}, k, v)
   end

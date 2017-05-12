@@ -8,6 +8,8 @@ defmodule ExFacts.CPU do
 
   @doc """
   Returns the integer number of processors that on the host.
+  Currently it relies on a call to the the system utility nproc, which means
+  this function will only on Unix or Unix like systems.
   """
   @spec counts :: integer
   def counts do
@@ -18,29 +20,40 @@ defmodule ExFacts.CPU do
    end
   end
 
-  @spec cpu_info :: tuple
+  @spec cpu_info :: %InfoStat{} | binary
   def cpu_info do
     filename = host_proc("cpuinfo")
-    file = File.open!(filename)
 
-    try do
-      data =
-        file
-         |> IO.binstream(:line)
-         |> Enum.map(& sanitize_data(&1))
-         |> Enum.map(& normalize_with_underscore(&1))
-         |> Enum.map(& finish_info(&1))
-         |> delete_all(%{})
-         |> split_data()
-         |> Enum.map(& flatten_info(&1))
-         |> Enum.map(& populate_info(&1))
+    info =
+      filename
+        |> File.read()
+        |> parse_info()
 
-      data
-    catch
-      e ->  Logger.error "Error occured while attempting to collect CPU infomation. Error: " <> e
-    after
-      %InfoStat{}
+    File.close filename
+    cond do
+      is_nil(info) -> %InfoStat{}
+      "" == info -> %InfoStat{}
+      true -> info
     end
+  end
+
+  def parse_info({:error, _reason}), do: Logger.error "Unable to read CPU Info because we are unable to read the file."
+  def parse_info({:ok, in_data}) when is_binary(in_data) do
+    data =
+      in_data
+       |> String.split("\n")
+       |> Enum.map(& sanitize_data(&1))
+       |> Enum.map(& normalize_with_underscore(&1))
+       |> Enum.map(& finish_info(&1))
+       |> delete_all(%{})
+       |> split_data()
+       |> Enum.map(& flatten_info(&1))
+       |> Enum.map(& populate_info(&1))
+
+    data
+  rescue
+      e ->  Logger.error "Error occured while attempting to parse CPU infomation. Error: " <> e
+      %InfoStat{}
   end
 
   @spec split_data(original :: list) :: list

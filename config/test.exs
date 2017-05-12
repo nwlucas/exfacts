@@ -1,6 +1,6 @@
 use Mix.Config
 
 config :exfacts,
-  etc_path: "support/etc",
-  proc_path: "support/proc",
-  sys_path: "support/sys"
+  etc_path: __DIR__ <> "/../test/files/etc",
+  proc_path: __DIR__ <> "/../test/files/proc",
+  sys_path: __DIR__ <> "/../test/files/sys"

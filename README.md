@@ -2,6 +2,8 @@
 
 
 ## Installation
+### mix.exs
+Add ExFacts to your list of dependencies
 
 ```elixir
 def deps do
@@ -22,6 +24,35 @@ defmodule SomeModule do
 
   def other_function do
     data = get_system_facts()
+  end
+end
+```
+
+But you can also short-circuit to only the functions that return the information that you are looking for.
+Aliases have been setup for each of the main areas to help avoid namespacing issues.
+
+* **ExCPU**
+
+* **ExDisk**
+
+* **ExHost**
+
+* **ExLoad**
+
+* **ExMem**
+
+* **ExNet**
+
+```elixir
+defmodule SomeModule do
+  use ExFacts
+
+  def some_function do
+    cpu_data = ExCPU.cpu_info()
+  end
+
+  def other_function do
+    host_data = ExHost.host_info()
   end
 end
 ```

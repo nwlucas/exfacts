@@ -2,18 +2,16 @@ defmodule ExFacts do
   @moduledoc """
   Provides the entry point for the facts gathering and output.
   """
-
   defmacro __using__(_opts) do
     quote do
-      alias
+      alias ExFacts.CPU, as: ExCPU
+      alias ExFacts.Disk, as: ExDisk
+      alias ExFacts.Host, as: ExHost
+      alias ExFacts.Load, as: ExLoad
+      alias ExFacts.Mem, as: ExMem
+      alias ExFacts.Net, as: ExNet
+
+      import ExFacts.Gather
     end
-  end
-
-  def get_system_facts do
-
-  end
-
-  def get_external_facts do
-
   end
 end

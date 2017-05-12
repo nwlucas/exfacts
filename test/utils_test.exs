@@ -1,31 +1,29 @@
-defmodule exFacts.UtilsTest do
+defmodule ExFacts.UtilsTest do
   import ExFacts.Utils
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest ExFacts.Utils
 
-  describe "Test functionality of ExFacts.Utils" do
-    test "proper path to proc in host_proc/0" do
-      assert "/proc" = host_proc()
+  describe "normalize_with_underscore/1" do
+    test "given a map" do
+      assert %{"some_key_with_spaces" => "Some value"} == normalize_with_underscore(%{"some key with Spaces"=>"Some value"})
     end
-
-    test "proper path to proc in host_proc/1" do
-      assert "/proc/some_directory" = host_proc("some_directory")
+    test "given a tuple" do
+      assert {"a_tuple_with_spaces", "another Item"} == normalize_with_underscore({"a tuple with spaces", "another Item"})
     end
-
-    test "proper path to sys in host_sys/0" do
-      assert "/sys" = host_sys()
+    test "given an empty binary" do
+      assert %{} == normalize_with_underscore("")
     end
+  end
 
-    test "proper path to proc in host_sys/1" do
-      assert "/sys/some_directory" = host_sys("some_directory")
+  describe "sanitize_data/1" do
+    test "given a binary with only a newline character" do
+      assert "" == sanitize_data("\n")
     end
-
-    test "proper path to etc in host_etc/0" do
-      assert "/etc" = host_etc()
+    test "given a binary" do
+      assert %{"Randomtext" => "interlacedwithescapecharacters"} == sanitize_data("Random\ttext    :    \ninterlaced\t\nwith\tescape\n\ncharacters     ")
     end
-
-    test "proper path to etc in host_etc/1" do
-      assert "/etc/some_directory" = host_etc("some_directory")
+    test "given an empty binary" do
+      assert "" == sanitize_data("")
     end
   end
 end
