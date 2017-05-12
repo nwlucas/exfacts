@@ -43,6 +43,7 @@ defmodule Facts.Mixfile do
 
   defp deps do
     [
+      {:logger_file_backend, "~> 0.0.9"},
       {:ex_doc, "~> 0.15.1", only: :dev},
       {:earmark, "~> 1.2.2", only: :dev},
       {:poison, "~> 3.0"},
