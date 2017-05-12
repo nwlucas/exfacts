@@ -1,5 +1,5 @@
-# ExFacts
-==========
+# ExFacts [![hex.pm version](https://img.shields.io/hexpm/v/exfacts.svg)](https://hex.pm/packages/exfacts)
+
 
 ## Installation
 
