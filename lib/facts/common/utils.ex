@@ -8,11 +8,19 @@ defmodule ExFacts.Utils do
   @sys_path Application.get_env(:exfacts, :sys_path, "/sys")
 
   @doc """
+  Returns the path to /etc on the filesystem.
+
+  Defaults to /etc and is only evaluated at compile time.
+  Note: When MIX_ENV=test it defaults to __DIR <> /test/files/etc
   """
   @spec host_etc :: binary
   def host_etc, do: Path.absname(@etc_path)
 
   @doc """
+  Returns the path to somefile in /etc on the filesystem.
+
+  Defaults to /etc/somefile, it can also be overriden at runtime via environment variables.
+  Note: When MIX_ENV=test it defaults to __DIR <> /test/files/etc/somefile
   """
   @spec host_etc(binary) :: binary
   def host_etc(combine_with)  when is_binary(combine_with) do
@@ -24,11 +32,19 @@ defmodule ExFacts.Utils do
   end
 
   @doc """
+  Returns the path to /proc on the filesystem.
+
+  Defaults to /proc and is only evaluated at compile time.
+  Note: When MIX_ENV=test it defaults to __DIR <> /test/files/proc
   """
   @spec host_proc :: binary
   def host_proc, do: Path.absname(@proc_path)
 
   @doc """
+  Returns the path to somefile in /proc on the filesystem.
+
+  Defaults to /proc/somefile, it can also be overriden at runtime via environment variables.
+  Note: When MIX_ENV=test it defaults to __DIR <> /test/files/proc
   """
   @spec host_proc(binary) :: binary
   def host_proc(combine_with)  when is_binary(combine_with) do
@@ -40,11 +56,19 @@ defmodule ExFacts.Utils do
   end
 
   @doc """
+  Returns the path to /sys on the filesystem.
+
+  Defaults to /sys and is only evaluated at compile time.
+  Note: When MIX_ENV=test it defaults to __DIR <> /test/files/sys
   """
   @spec host_sys :: binary
   def host_sys, do: Path.absname(@sys_path)
 
   @doc """
+  Returns the path to somefile in /sys on the filesystem.
+
+  Defaults to /sys/somefile, can also be overriden at runtime via environment variables.
+  Note: When MIX_ENV=test it defaults to __DIR <> /test/files/etc
   """
   @spec host_sys(binary) :: binary
   def host_sys(combine_with)  when is_binary(combine_with) do
@@ -96,6 +120,7 @@ defmodule ExFacts.Utils do
   end
 
   @doc """
+  Normalizes keys to thier downcased, snake case version.
   """
   @spec normalize_with_underscore(map) :: map
   def normalize_with_underscore(item) when is_map(item) do
@@ -108,6 +133,7 @@ defmodule ExFacts.Utils do
   end
 
   @doc """
+  Normalizes the first element in the tuple to its downcased, snake case version.
   """
   @spec normalize_with_underscore(tuple) :: tuple
   def normalize_with_underscore(item) when is_tuple(item) do
@@ -122,11 +148,17 @@ defmodule ExFacts.Utils do
   end
 
   @doc """
+  Returns an empty map if the binary itself is empty.
   """
   @spec normalize_with_underscore(binary) :: map
   def normalize_with_underscore("" = item) when is_binary(item), do: %{}
 
   @doc """
+  Iterates through a list and removes any items that math the argument.
+
+  ##Examples
+    iex> ["Some", "items", "are", "here"] |> delete_all("are")
+    ["Some", "items", "here"]
   """
   @spec delete_all(list, any) :: list
   def delete_all(list, value) do

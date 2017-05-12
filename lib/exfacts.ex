@@ -2,6 +2,8 @@ defmodule ExFacts do
   @moduledoc """
   Provides the entry point for the facts gathering and output.
   """
+
+  @doc false
   defmacro __using__(_opts) do
     quote do
       alias ExFacts.CPU, as: ExCPU
