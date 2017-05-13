@@ -1,7 +1,7 @@
-defmodule ExFacts.CPUTest do
+defmodule ExFacts.System.CPUTest do
   use ExUnit.Case, async: true
-  import ExFacts.CPU
-  doctest ExFacts.CPU
+  import ExFacts.System.CPU
+  doctest ExFacts.System.CPU
 
   test "CPU.counts/0" do
     {cpus, 0} = System.cmd "nproc", []
@@ -18,7 +18,7 @@ defmodule ExFacts.CPUTest do
   end
 
   test "CPU.cpu_info/0" do
-    {:ok, data} = {:ok, [%ExFacts.CPU.InfoStat{cache_size: 2048, core_id: "0", cores: 2, cpu: 0,
+    {:ok, data} = {:ok, [%ExFacts.System.CPU.InfoStat{cache_size: 2048, core_id: "0", cores: 2, cpu: 0,
    family: "21",
    flags: ["fpu", "vme", "de", "pse", "tsc", "msr", "pae", "mce", "cx8", "apic",
     "sep", "mtrr", "pge", "mca", "cmov", "pat", "pse36", "clflush", "mmx",
@@ -34,7 +34,7 @@ defmodule ExFacts.CPUTest do
    mhz: 1.4, microcode: "0x600063d",
    model: "1", model_name: "AMD FX(tm)-4100 Quad-Core Processor",
    physical_id: "0", stepping: 2, vendor_id: "AuthenticAMD"},
-  %ExFacts.CPU.InfoStat{cache_size: 2048, core_id: "1", cores: 2, cpu: 1,
+  %ExFacts.System.CPU.InfoStat{cache_size: 2048, core_id: "1", cores: 2, cpu: 1,
    family: "21",
    flags: ["fpu", "vme", "de", "pse", "tsc", "msr", "pae", "mce", "cx8", "apic",
     "sep", "mtrr", "pge", "mca", "cmov", "pat", "pse36", "clflush", "mmx",
@@ -50,7 +50,7 @@ defmodule ExFacts.CPUTest do
    mhz: 1.4, microcode: "0x600063d", model: "1",
    model_name: "AMD FX(tm)-4100 Quad-Core Processor", physical_id: "0",
    stepping: 2, vendor_id: "AuthenticAMD"},
-  %ExFacts.CPU.InfoStat{cache_size: 2048, core_id: "2", cores: 2, cpu: 2,
+  %ExFacts.System.CPU.InfoStat{cache_size: 2048, core_id: "2", cores: 2, cpu: 2,
    family: "21",
    flags: ["fpu", "vme", "de", "pse", "tsc", "msr", "pae", "mce", "cx8", "apic",
     "sep", "mtrr", "pge", "mca", "cmov", "pat", "pse36", "clflush", "mmx",
@@ -66,7 +66,7 @@ defmodule ExFacts.CPUTest do
    mhz: 1.4, microcode: "0x600063d", model: "1",
    model_name: "AMD FX(tm)-4100 Quad-Core Processor", physical_id: "0",
    stepping: 2, vendor_id: "AuthenticAMD"},
-  %ExFacts.CPU.InfoStat{cache_size: 2048, core_id: "3", cores: 2, cpu: 3,
+  %ExFacts.System.CPU.InfoStat{cache_size: 2048, core_id: "3", cores: 2, cpu: 3,
    family: "21",
    flags: ["fpu", "vme", "de", "pse", "tsc", "msr", "pae", "mce", "cx8", "apic",
     "sep", "mtrr", "pge", "mca", "cmov", "pat", "pse36", "clflush", "mmx",

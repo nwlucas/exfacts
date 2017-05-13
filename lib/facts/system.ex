@@ -1,5 +1,5 @@
 defmodule ExFacts.System do
-  alias ExFacts.{CPU, Disk, Host, Load, Mem, Net}
+  alias ExFacts.System.{CPU, Disk, Host, Load, Mem, Net}
   @moduledoc """
   Provides a common entry point to gather all internal information in one command and returns a serialized JSON reponse.
   """

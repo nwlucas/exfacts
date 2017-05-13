@@ -1,6 +1,6 @@
-defmodule ExFacts.CPU.InfoStatTest do
-  alias ExFacts.CPU.InfoStat
+defmodule ExFacts.System.CPU.InfoStatTest do
   use ExUnit.Case, async: true
+  alias ExFacts.System.CPU.InfoStat
   doctest InfoStat
 
 end
