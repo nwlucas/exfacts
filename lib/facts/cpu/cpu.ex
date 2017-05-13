@@ -20,25 +20,27 @@ defmodule ExFacts.CPU do
    end
   end
 
-  @spec cpu_info :: %InfoStat{} | binary
+  @spec cpu_info :: {atom, [%InfoStat{}]} | binary
   def cpu_info do
     filename = host_proc("cpuinfo")
 
     info =
       filename
-        |> File.read()
+        |> read_file()
         |> parse_info()
 
     File.close filename
-    cond do
-      is_nil(info) -> %InfoStat{}
-      "" == info -> %InfoStat{}
-      true -> info
-    end
+
+    info =
+      cond do
+        is_nil(info) -> %InfoStat{}
+        "" == info -> %InfoStat{}
+        true -> info
+      end
+    {:ok, info}
   end
 
-  def parse_info({:error, _reason}), do: Logger.error "Unable to read CPU Info because we are unable to read the file."
-  def parse_info({:ok, in_data}) when is_binary(in_data) do
+  def parse_info(in_data) when is_binary(in_data) do
     data =
       in_data
        |> String.split("\n")
@@ -51,9 +53,6 @@ defmodule ExFacts.CPU do
        |> Enum.map(& populate_info(&1))
 
     data
-  rescue
-      e ->  Logger.error "Error occured while attempting to parse CPU infomation. Error: " <> e
-      %InfoStat{}
   end
 
   @spec split_data(original :: list) :: list

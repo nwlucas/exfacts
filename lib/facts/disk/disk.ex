@@ -12,16 +12,14 @@ defmodule ExFacts.Disk do
   """
   @spec partitions(boolean) :: tuple
   def partitions(all \\ true) do
-    try do
-      p = read_mtab()
-        |> get_file_systems(all)
-        |> Enum.map(& generate_list(&1))
+    p = read_mtab()
+      |> get_file_systems(all)
+      |> Enum.map(& generate_list(&1))
 
-      {:ok, p}
-    rescue
-      e -> Logger.error "Error occured while attempting to gather partitions facts: " <> e
-      {:error, e}
-    end
+    {:ok, p}
+  rescue
+    e -> Logger.error "Error occured while attempting to gather partitions facts: " <> e
+    {:error, e}
   end
 
   @spec read_mtab :: list(list(String.t))

@@ -30,7 +30,8 @@ defmodule ExFacts do
       alias ExFacts.Mem, as: ExMem
       alias ExFacts.Net, as: ExNet
 
-      import ExFacts.Gather
+      import ExFacts.System
+      import ExFacts.External
     end
   end
 end

@@ -20,7 +20,7 @@ defmodule ExFacts.Host.InfoStat do
     platform_family: binary,
     platform_version: binary,
     kernel_version: binary,
-    virtualizatioon_system: binary,
+    virtualization_system: binary,
     virtualization_role: binary,
     host_id: binary
   }
@@ -35,7 +35,7 @@ defmodule ExFacts.Host.InfoStat do
     platform_family: "",
     platform_version: "",
     kernel_version: "",
-    virtualizatioon_system: "",
+    virtualization_system: "",
     virtualization_role: "",
     host_id: ""
   ]

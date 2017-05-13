@@ -16,12 +16,7 @@ defmodule ExFacts.Load do
       |> Enum.take(3)
       |> Enum.map(& String.to_float(&1))
 
-    %AvgStat{
-      load1: Enum.fetch!(loads, 0),
-      load5: Enum.fetch!(loads, 1),
-      load15: Enum.fetch!(loads, 2)
-    }
-
+    {:ok, %AvgStat{load1: Enum.fetch!(loads, 0), load5: Enum.fetch!(loads, 1), load15: Enum.fetch!(loads, 2)}}
   end
 
   def misc do
@@ -37,10 +32,10 @@ defmodule ExFacts.Load do
     |> Map.merge(Regex.named_captures(blocked_regex, contents))
     |> Map.merge(Regex.named_captures(ctxt_regex, contents))
 
-   %MiscStat{
+  {:ok, %MiscStat{
      procs_running: String.to_integer(Map.fetch!(results, "running")),
      procs_blocked: String.to_integer(Map.fetch!(results, "blocked")),
      ctxt: String.to_integer(Map.fetch!(results, "ctxt"))
-   }
+   }}
   end
 end

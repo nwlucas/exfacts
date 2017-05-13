@@ -4,26 +4,33 @@ defmodule Facts.Mixfile do
   def project do
     [
       app: :exfacts,
-      version: "0.1.2",
+      version: "0.1.3",
       build_path: "_build",
       config_path: "config/config.exs",
       deps_path: "deps",
       lockfile: "mix.lock",
       elixir: "~> 1.4",
-      description: "A library for collection a variety of system facts.",
-      source_url: "https://github.com/nwlucas/exfacts",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps(),
       package: package(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env:
-        [
-          "coveralls": :test,
-          "coveralls.detail": :test,
-          "coveralls.post": :test,
-          "coveralls.html": :test
-        ]
+      preferred_cli_env: [
+        "coveralls": :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
+
+      # Docs
+      name: "ExFacts",
+      description: "A library for collection a variety of system facts.",
+      source_url: "https://github.com/nwlucas/exfacts",
+      homepage_url: "https://github.com/nwlucas/exfacts",
+      docs: [
+        main: "ExFacts",
+        extras: ["README.md"]
+      ]
     ]
   end
 

@@ -13,7 +13,7 @@ defmodule ExFacts.Mem do
 
     mem_info = Enum.into(Enum.map(contents, &b2kl(&1)), %{})
 
-    %{v_mem: virtual_memory(mem_info), s_mem: swap_memory(mem_info)}
+    {:ok, %{virtual: virtual_memory(mem_info), swap: swap_memory(mem_info)}}
   end
 
   @spec virtual_memory(map) :: %ExFacts.Mem.VirtualMemStat{}

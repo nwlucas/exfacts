@@ -10,20 +10,20 @@ defmodule ExFacts.Host do
     {system, role} = virtualization()
     {_os_family, os_name} = :os.type()
 
-    %ExFacts.Host.InfoStat{
-      hostname: hostname(),
-      uptime: up_time(b),
-      bootime: b,
-      procs: counts(),
-      os: Atom.to_string(os_name),
-      platform: platform,
-      platform_family: get_family(platform),
-      platform_version: version,
-      kernel_version: kernel_version(),
-      virtualizatioon_system: system,
-      virtualization_role: role,
-      host_id: host_id()
-    }
+    {:ok, %ExFacts.Host.InfoStat{
+          hostname: hostname(),
+          uptime: up_time(b),
+          bootime: b,
+          procs: counts(),
+          os: Atom.to_string(os_name),
+          platform: platform,
+          platform_family: get_family(platform),
+          platform_version: version,
+          kernel_version: kernel_version(),
+          virtualization_system: system,
+          virtualization_role: role,
+          host_id: host_id()
+        }}
   end
 
   # This function is used as a stub to call the real function.
