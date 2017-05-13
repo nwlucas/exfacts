@@ -328,6 +328,7 @@ defmodule ExFacts.System.Host do
           String.contains?(contents, "kvm") -> {"kvm", "host"}
           String.contains?(contents, "vboxdrv") -> {"vbox", "host"}
           String.contains?(contents, "vboxguest") -> {"vbox", "guest"}
+          String.contains?(contents, "vmware") -> {"vmware", "guest"}
         end
 
       File.exists?(cpu_file) ->

@@ -2,7 +2,7 @@ defmodule ExFacts.System.CPU do
   @moduledoc """
   Handles all logic with regards to collecting metrics on the CPUs of the host. Returns a `ExFactsCPU.InfoStat` populated struct.
   """
-  alias ExFacts.System.CPU.{InfoStat, TimeStat}
+  alias ExFacts.System.CPU.InfoStat
   import ExFacts.Utils
   require Logger
 
@@ -17,7 +17,10 @@ defmodule ExFacts.System.CPU do
   @spec counts :: integer
   def counts do
    case System.cmd @nproc, [] do
-     {k, 0} -> String.replace(k, "\n", "") |> String.to_integer
+     {k, 0} ->
+       k
+       |> String.replace("\n", "")
+       |> String.to_integer
      {_, _} -> raise "Unable to determine the CPU count"
    end
   end
