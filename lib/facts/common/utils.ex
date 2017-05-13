@@ -160,10 +160,18 @@ defmodule ExFacts.Utils do
 
   @doc """
   Iterates through a list and removes any items that math the argument.
+  If the argument given is not in the specified list it returns the original list.
 
-  ##Examples
-    iex> ["Some", "items", "are", "here"] |> delete_all("are")
-    ["Some", "items", "here"]
+  ## Examples
+
+      iex> ["Some", "items", "are", "here"] |> delete_all("are")
+      ["Some", "items", "here"]
+
+      iex> ["Some", "items", "are", "are", "here"] |> delete_all("are")
+      ["Some", "items", "here"]
+
+      iex> ["Some", "items", "are", "here"] |> delete_all("foo")
+      ["Some", "items", "are", "here"]
   """
   @spec delete_all(list, any) :: list
   def delete_all(list, value) do

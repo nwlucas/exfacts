@@ -37,6 +37,7 @@ defmodule ExFacts.CPU do
         "" == info -> %InfoStat{}
         true -> info
       end
+
     {:ok, info}
   end
 
@@ -55,7 +56,7 @@ defmodule ExFacts.CPU do
     data
   end
 
-  @spec split_data(original :: list) :: list
+  @spec split_data(original :: []) :: []
   def split_data(data) do
     i =
       data

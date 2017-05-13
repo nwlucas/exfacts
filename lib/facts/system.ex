@@ -9,6 +9,9 @@ defmodule ExFacts.System do
 
   It calls all underlying modules and aggregates the returned data then formats it in the desired JSON output.
   """
+  @type t :: binary
+
+  @spec gather_system(Keyword.t) :: t
   def gather_system(opts \\ []) do
     defaults = [partitions: true, cpus: true]
     options = Keyword.merge(defaults, opts)
@@ -40,6 +43,7 @@ defmodule ExFacts.System do
     Poison.encode! data, strict_keys: true
   end
 
+  @spec transform_cpu([%CPU.InfoStat{}]) :: Map.t
   defp transform_cpu(data) do
     data |> Enum.with_index() |> Enum.flat_map(fn {v, k} -> %{"cpu#{k}": v} end) |> Enum.into(%{})
   end

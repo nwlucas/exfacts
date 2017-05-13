@@ -50,12 +50,13 @@ defmodule Facts.Mixfile do
 
   defp deps do
     [
-      {:logger_file_backend, "~> 0.0.9"},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
       {:ex_doc, "~> 0.15.1", only: :dev},
       {:earmark, "~> 1.2.2", only: :dev},
+      {:logger_file_backend, "~> 0.0.9"},
+      {:excoveralls, "~> 0.6", only: :test},
       {:poison, "~> 3.0"},
-      {:porcelain, "~> 2.0"},
-      {:excoveralls, "~> 0.6", only: :test}
+      {:porcelain, "~> 2.0"}
     ]
   end
 end

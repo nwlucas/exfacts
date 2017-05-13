@@ -22,7 +22,7 @@ defmodule ExFacts.Disk do
     {:error, e}
   end
 
-  @spec read_mtab :: list(list(String.t))
+  @spec read_mtab :: [[binary]]
   def read_mtab do
     filename = host_etc("mtab")
     lines =
@@ -35,7 +35,7 @@ defmodule ExFacts.Disk do
     lines
   end
 
-  @spec get_file_systems(mtab :: list, all :: boolean) :: list(String.t)
+  @spec get_file_systems(mtab :: [], all :: boolean) :: [binary]
   def get_file_systems(mtab, all) do
     filename = host_proc("filesystems")
     fs =
@@ -55,7 +55,7 @@ defmodule ExFacts.Disk do
     data
   end
 
-  @spec generate_list(data :: list) :: %ExFacts.Disk.PartitionStat{}
+  @spec generate_list(data :: []) :: %ExFacts.Disk.PartitionStat{}
   def generate_list(data) do
     %PartitionStat{
       device: Enum.fetch!(data, 0),
