@@ -1,9 +1,9 @@
-defmodule ExFacts.Disk do
+defmodule ExFacts.System.Disk do
   @moduledoc """
   """
-  alias ExFacts.Disk.PartitionStat
+  alias ExFacts.System.Disk.PartitionStat
   import ExFacts.Utils
-  require ExFacts.Disk.Constants
+  require ExFacts.System.Disk.Constants
   require Logger
 
   @doc """
@@ -55,7 +55,7 @@ defmodule ExFacts.Disk do
     data
   end
 
-  @spec generate_list(data :: []) :: %ExFacts.Disk.PartitionStat{}
+  @spec generate_list(data :: []) :: %ExFacts.System.Disk.PartitionStat{}
   def generate_list(data) do
     %PartitionStat{
       device: Enum.fetch!(data, 0),

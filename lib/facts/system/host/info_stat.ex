@@ -1,16 +1,16 @@
-defmodule ExFacts.Host.InfoStat do
+defmodule ExFacts.System.Host.InfoStat do
   @moduledoc """
     Provides a struct to hold Host data.
 
-    ##Examples
+    ## Examples
 
-      iex> h = %ExFacts.Host.InfoStat{hostname: "somehost", os: "Linux"}
-      ...> h.os
-      "Linux"
+        iex> h = %ExFacts.System.Host.InfoStat{hostname: "somehost", os: "Linux"}
+        ...> h.os
+        "Linux"
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.Host.InfoStat{
+  @type t :: %ExFacts.System.Host.InfoStat{
     hostname: binary,
     uptime: integer,
     bootime: integer,

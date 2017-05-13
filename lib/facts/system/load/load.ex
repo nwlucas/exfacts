@@ -1,7 +1,7 @@
-defmodule ExFacts.Load do
+defmodule ExFacts.System.Load do
   @moduledoc """
   """
-  alias ExFacts.Load.{AvgStat, MiscStat}
+  alias ExFacts.System.Load.{AvgStat, MiscStat}
   import ExFacts.Utils
   require Logger
 

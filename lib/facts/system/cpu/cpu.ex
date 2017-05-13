@@ -1,10 +1,13 @@
-defmodule ExFacts.CPU do
+defmodule ExFacts.System.CPU do
   @moduledoc """
   Handles all logic with regards to collecting metrics on the CPUs of the host. Returns a `ExFactsCPU.InfoStat` populated struct.
   """
-  alias ExFacts.CPU.{InfoStat, TimeStat}
+  alias ExFacts.System.CPU.{InfoStat, TimeStat}
   import ExFacts.Utils
   require Logger
+
+  @cpuinfo Application.get_env(:exfacts, :cpuinfo, "cpuinfo")
+  @nproc Application.get_env(:exfacts, :nproc, "nproc")
 
   @doc """
   Returns the integer number of processors that on the host.
@@ -13,16 +16,15 @@ defmodule ExFacts.CPU do
   """
   @spec counts :: integer
   def counts do
-   case System.cmd "nproc", [] do
-     {k, 0} ->
-        String.to_integer(String.replace(k, "\n", ""))
+   case System.cmd @nproc, [] do
+     {k, 0} -> String.replace(k, "\n", "") |> String.to_integer
      {_, _} -> raise "Unable to determine the CPU count"
    end
   end
 
   @spec cpu_info :: {atom, [%InfoStat{}]} | binary
   def cpu_info do
-    filename = host_proc("cpuinfo")
+    filename = host_proc(@cpuinfo)
 
     info =
       filename
@@ -41,6 +43,7 @@ defmodule ExFacts.CPU do
     {:ok, info}
   end
 
+  def parse_info({:error, reason}), do: raise "#{__MODULE__} error #{inspect reason}"
   def parse_info(in_data) when is_binary(in_data) do
     data =
       in_data
@@ -84,7 +87,7 @@ defmodule ExFacts.CPU do
     end
   end
 
-  @spec populate_info(map) :: %ExFacts.CPU.InfoStat{}
+  @spec populate_info(map) :: %ExFacts.System.CPU.InfoStat{}
   def populate_info(data) when is_map(data) do
     cd =  for {key, val} <- data, into: %{} do
             case key do

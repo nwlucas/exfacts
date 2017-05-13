@@ -3,7 +3,9 @@ use Mix.Config
 config :exfacts,
   etc_path: "/etc",
   proc_path: "/proc",
-  sys_path: "/sys"
+  sys_path: "/sys",
+  cpuinfo: "cpuinfo",
+  nproc: "nproc"
 
 config :logger,
   backends: [:console],

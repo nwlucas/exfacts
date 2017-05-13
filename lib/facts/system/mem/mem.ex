@@ -1,7 +1,7 @@
-defmodule ExFacts.Mem do
+defmodule ExFacts.System.Mem do
   @moduledoc """
   """
-  alias ExFacts.Mem.{VirtualMemStat, SwapMemStat}
+  alias ExFacts.System.Mem.{VirtualMemStat, SwapMemStat}
   import ExFacts.Utils
   require Logger
 
@@ -16,7 +16,7 @@ defmodule ExFacts.Mem do
     {:ok, %{virtual: virtual_memory(mem_info), swap: swap_memory(mem_info)}}
   end
 
-  @spec virtual_memory(map) :: %ExFacts.Mem.VirtualMemStat{}
+  @spec virtual_memory(map) :: %ExFacts.System.Mem.VirtualMemStat{}
   def virtual_memory(data) do
     avail = determine_avail_mem(data)
 
@@ -40,7 +40,7 @@ defmodule ExFacts.Mem do
     }
   end
 
-  @spec swap_memory(map) :: %ExFacts.Mem.SwapMemStat{}
+  @spec swap_memory(map) :: %ExFacts.System.Mem.SwapMemStat{}
   def swap_memory(data) do
     filename = host_proc("vmstat")
 

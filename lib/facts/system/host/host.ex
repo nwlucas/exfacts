@@ -1,4 +1,4 @@
-defmodule ExFacts.Host do
+defmodule ExFacts.System.Host do
   @moduledoc """
   """
   import ExFacts.Utils
@@ -10,7 +10,7 @@ defmodule ExFacts.Host do
     {system, role} = virtualization()
     {_os_family, os_name} = :os.type()
 
-    {:ok, %ExFacts.Host.InfoStat{
+    {:ok, %ExFacts.System.Host.InfoStat{
           hostname: hostname(),
           uptime: up_time(b),
           bootime: b,
@@ -182,7 +182,7 @@ defmodule ExFacts.Host do
     end
   end
 
-  @spec get_lsb :: %ExFacts.Host.LSB{}
+  @spec get_lsb :: %ExFacts.System.Host.LSB{}
   def get_lsb do
     lsb =
       if File.exists?(host_etc("lsb-release")), do: get_lsb_release()
@@ -191,7 +191,7 @@ defmodule ExFacts.Host do
     lsb
   end
 
-  @spec get_lsb_release :: %ExFacts.Host.LSB{}
+  @spec get_lsb_release :: %ExFacts.System.Host.LSB{}
   def get_lsb_release do
     lines =
       "lsb-release"
@@ -204,7 +204,7 @@ defmodule ExFacts.Host do
             Enum.fetch!(tl(x), 0)
           } end)
 
-    %ExFacts.Host.LSB{
+    %ExFacts.System.Host.LSB{
       id: lines[:ID],
       release: lines[:RELEASE],
       codename: lines[:CODENAME],
@@ -218,7 +218,7 @@ defmodule ExFacts.Host do
     {lines, _} = System.cmd "/usr/bin/lsb_release", []
 
     case lines do
-      "" -> %ExFacts.Host.LSB{id: "", release: "", codename: "", description: ""}
+      "" -> %ExFacts.System.Host.LSB{id: "", release: "", codename: "", description: ""}
       _ ->
         ret =
           lines
@@ -230,7 +230,7 @@ defmodule ExFacts.Host do
                   String.to_atom(hd(x)), Enum.fetch!(tl(x), 0)
                 } end)
 
-        %ExFacts.Host.LSB{
+        %ExFacts.System.Host.LSB{
           id: ret[:distributor_id],
           release: ret[:release],
           codename: ret[:codename],

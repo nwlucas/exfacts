@@ -1,16 +1,16 @@
-defmodule ExFacts.Disk.UsageStat do
+defmodule ExFacts.System.Disk.UsageStat do
   @moduledoc """
     Provides a struct to hold usage data.
 
-    ##Examples
+    ## Examples
 
-      iex> u = %UsageStat{path: "/", used_persent: "14"}
-      ...> u.path
-      "/"
+        iex> u = %UsageStat{path: "/", used_persent: "14"}
+        ...> u.path
+        "/"
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.Disk.UsageStat{
+  @type t :: %ExFacts.System.Disk.UsageStat{
     path: binary,
     fs_type: binary,
     total: float,

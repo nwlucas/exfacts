@@ -1,12 +1,12 @@
-defmodule ExFacts.CPU.TimesStat do
+defmodule ExFacts.System.CPU.TimesStat do
   @moduledoc """
     Provides a struct to hold CPU data.
 
-    ##Examples
+    ## Examples
 
-      iex> d = %TimeStat{cpu: 0, user: "SomeUser"}
-      ...> d.user
-      "SomeUser"
+        iex> d = %ExFacts.System.CPU.TimeStat{cpu: 0, user: "SomeUser"}
+        ...> d.user
+        "SomeUser"
   """
 
   @derive [Poison.Encoder]

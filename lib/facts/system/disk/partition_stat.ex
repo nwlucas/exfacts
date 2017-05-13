@@ -1,16 +1,16 @@
-defmodule ExFacts.Disk.PartitionStat do
+defmodule ExFacts.System.Disk.PartitionStat do
   @moduledoc """
     Provides a struct to hold Partition data.
 
-    ##Examples
+    ## Examples
 
-      iex> p = %PartitionStat{device: "/dev/sda", mount_point: "/"}
-      ...> p.mount_point
-      "/"
+        iex> p = %PartitionStat{device: "/dev/sda", mount_point: "/"}
+        ...> p.mount_point
+        "/"
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.Disk.PartitionStat{
+  @type t :: %ExFacts.System.Disk.PartitionStat{
     device: binary,
     mount_point: binary,
     fs_type: binary,

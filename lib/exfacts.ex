@@ -7,28 +7,28 @@ defmodule ExFacts do
   implemented but ultimately the tool should allow the same functionality across
   many diffrent operating systems
 
-  ## CPU
+  ## System.CPU
 
-  ## Disk
+  ## System.Disk
 
-  ## Host
+  ## System.Host
 
-  ## Load
+  ## System.Load
 
-  ## Mem
+  ## System.Mem
 
-  ## Net
+  ## System.Net
   """
 
   @doc false
   defmacro __using__(_opts) do
     quote do
-      alias ExFacts.CPU, as: ExCPU
-      alias ExFacts.Disk, as: ExDisk
-      alias ExFacts.Host, as: ExHost
-      alias ExFacts.Load, as: ExLoad
-      alias ExFacts.Mem, as: ExMem
-      alias ExFacts.Net, as: ExNet
+      alias ExFacts.System.CPU, as: ExCPU
+      alias ExFacts.System.Disk, as: ExDisk
+      alias ExFacts.System.Host, as: ExHost
+      alias ExFacts.System.Load, as: ExLoad
+      alias ExFacts.System.Mem, as: ExMem
+      alias ExFacts.System.Net, as: ExNet
 
       import ExFacts.System
       import ExFacts.External

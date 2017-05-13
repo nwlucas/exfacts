@@ -1,16 +1,16 @@
-defmodule ExFacts.Disk.IOCounterStat do
+defmodule ExFacts.System.Disk.IOCounterStat do
   @moduledoc """
     Provides a struct to hold IO counters data.
 
-    ##Examples
+    ## Examples
 
-      iex> i = %IOCounterStat{name: "somedrive", read_count: "14"}
-      ...> i.name
-      "somedrive"
+        iex> i = %IOCounterStat{name: "somedrive", read_count: "14"}
+        ...> i.name
+        "somedrive"
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.Disk.IOCounterStat{
+  @type t :: %ExFacts.System.Disk.IOCounterStat{
     read_count: float,
     merged_read_count: float,
     write_count: float,

@@ -1,4 +1,4 @@
-defmodule Facts.Mixfile do
+defmodule ExFacts.Mixfile do
   use Mix.Project
 
   def project do
