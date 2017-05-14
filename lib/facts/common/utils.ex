@@ -177,4 +177,31 @@ defmodule ExFacts.Utils do
   def delete_all(list, value) do
     Enum.filter(list, & &1 !== value)
   end
+
+  @doc """
+  Determines is the argument is a path, executable that exists on the host.
+  Returns:
+
+  {:ok, path} for a success
+  {:error, "Path or executable not found"} for failures
+
+  ## Examples
+
+      iex> look_path("/")
+      {:ok, "/"}
+
+      iex> look_path("/somearbtritrailylongpaththatprobablyshouldnotexist")
+      {:error, "Path or executable not found"}
+  """
+  @spec look_path(binary) :: {:ok, String.t} | {:error, String.t}
+  def look_path, do: raise "#{__MODULE__} no path provided"
+  def look_path("" = _path), do: raise "#{__MODULE__} empty path provided"
+  def look_path(path) do
+    p = Path.expand path
+    if File.exists?(p) do
+      {:ok, p}
+    else
+      {:error, "Path or executable not found"}
+    end
+  end
 end

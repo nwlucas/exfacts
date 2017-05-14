@@ -7,8 +7,9 @@ defmodule ExFacts.System.Disk do
   require Logger
 
   @doc """
-  `ExFacts.Disk.partitions/1` reads the disk information from the host, cleans up the data a bit and returns a list
-  with the info. Depending on the value of all it will return all disks if true, or only physical disks if false.
+  `ExFacts.System.Disk.partitions/1` reads the disk information from the host,
+  cleans up the data a bit and returns a list with the info. Depending on the
+  value of all it will return all disks if true, or only physical disks if false.
   """
   @spec partitions(boolean) :: tuple
   def partitions(all \\ true) do
@@ -63,5 +64,33 @@ defmodule ExFacts.System.Disk do
       fs_type: Enum.fetch!(data, 2),
       opts: Enum.fetch!(data, 3)
     }
+  end
+
+  @spec get_serial_number(String.t) :: String.t
+  def get_serial_number(disk) do
+    n = "--name=" <> disk
+
+    out =
+      case look_path("/sbin/udevadm") do
+        {:ok, udevadm} -> System.cmd udevadm, ["info", "--query=property", n]
+        {:error, reason} -> {:error, reason}
+      end
+
+    case out do
+      {output, 0} ->
+        lines =
+          output
+          |> String.split("\n")
+          |> delete_all("")
+          |> Enum.map(& String.split(&1, "="))
+          |> Enum.flat_map(fn [k, v] -> Map.put(%{}, k, v) end)
+          |> Enum.into(%{})
+
+        if Map.has_key?(lines, "ID_SERIAL"), do: Map.fetch!(lines, "ID_SERIAL"), else: ""
+      {:error, _reason} -> ""
+      {_, _} ->
+        raise "#{__MODULE__} error from udevadm."
+        ""
+    end
   end
 end
