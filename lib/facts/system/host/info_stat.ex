@@ -10,7 +10,7 @@ defmodule ExFacts.System.Host.InfoStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Host.InfoStat{
+  @type t :: %__MODULE__{
     hostname: binary,
     uptime: integer,
     bootime: integer,

@@ -10,7 +10,7 @@ defmodule ExFacts.System.Load.MiscStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Load.MiscStat {
+  @type t :: %__MODULE__{
     procs_running: integer,
     procs_blocked: integer,
     ctxt: integer

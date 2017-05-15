@@ -10,7 +10,7 @@ defmodule ExFacts.System.CPU.InfoStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.CPU.InfoStat{
+  @type t :: %__MODULE__{
     cpu: integer,
     vendor_id: binary,
     family: binary,
@@ -22,7 +22,7 @@ defmodule ExFacts.System.CPU.InfoStat do
     model_name: binary,
     mhz: float,
     cache_size: integer,
-    flags: list,
+    flags: [binary],
     microcode: binary
     }
 
@@ -38,7 +38,7 @@ defmodule ExFacts.System.CPU.InfoStat do
     model_name: "",
     mhz: 0.0,
     cache_size: 0,
-    flags: [],
+    flags: [""],
     microcode: ""
   ]
 end

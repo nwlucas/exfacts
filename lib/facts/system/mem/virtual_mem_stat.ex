@@ -10,7 +10,7 @@ defmodule ExFacts.System.Mem.VirtualMemStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Mem.VirtualMemStat {
+  @type t :: %__MODULE__{
     total: integer,
     available: integer,
     used: integer,

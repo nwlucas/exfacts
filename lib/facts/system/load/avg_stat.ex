@@ -10,7 +10,7 @@ defmodule ExFacts.System.Load.AvgStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Load.AvgStat {
+  @type t :: %__MODULE__{
     load1: float,
     load5: float,
     load15: float

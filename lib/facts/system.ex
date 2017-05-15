@@ -9,9 +9,7 @@ defmodule ExFacts.System do
 
   It calls all underlying modules and aggregates the returned data then formats it in the desired JSON output.
   """
-  @type t :: binary
-
-  @spec gather_system(Keyword.t) :: t
+  @spec gather_system(Keyword.t) :: binary
   def gather_system(opts \\ []) do
     defaults = [partitions: true, cpus: true]
     options = Keyword.merge(defaults, opts)

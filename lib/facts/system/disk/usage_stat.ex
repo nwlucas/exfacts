@@ -10,7 +10,7 @@ defmodule ExFacts.System.Disk.UsageStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Disk.UsageStat{
+  @type t :: %__MODULE__{
     path: binary,
     fs_type: binary,
     total: integer,

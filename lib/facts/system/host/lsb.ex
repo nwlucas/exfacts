@@ -10,7 +10,7 @@ defmodule ExFacts.System.Host.LSB do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Host.LSB{
+  @type t :: %__MODULE__{
     id: binary,
     release: binary,
     codename: binary,

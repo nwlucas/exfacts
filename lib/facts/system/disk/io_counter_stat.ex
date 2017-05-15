@@ -10,7 +10,7 @@ defmodule ExFacts.System.Disk.IOCounterStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Disk.IOCounterStat{
+  @type t :: %__MODULE__{
     read_count: float,
     merged_read_count: float,
     write_count: float,

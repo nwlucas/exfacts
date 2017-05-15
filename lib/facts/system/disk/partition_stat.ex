@@ -10,7 +10,7 @@ defmodule ExFacts.System.Disk.PartitionStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Disk.PartitionStat{
+  @type t :: %__MODULE__{
     device: binary,
     mount_point: binary,
     fs_type: binary,

@@ -10,7 +10,7 @@ defmodule ExFacts.System.Mem.SwapMemStat do
   """
   @derive [Poison.Encoder]
 
-  @type t :: %ExFacts.System.Mem.SwapMemStat {
+  @type t :: %__MODULE__{
     total: integer,
     used: integer,
     used_percent: float,
