@@ -204,4 +204,18 @@ defmodule ExFacts.Utils do
       {:error, "Path or executable not found"}
     end
   end
+
+  @doc """
+  Internal wrapper function to convert binary to float, using `Float.parse/1`.
+  If the item is solely an unparsable binary it is returned untouched, otherwise
+  only the float element of the resultant tuple is returned.
+  """
+  @spec parse_float(String.t) :: Float.t | String.t
+  def parse_float(item) do
+    case Float.parse item do
+      {k, _v} when is_float(k) -> k
+      {k, _v} when is_number(k) -> k
+      :error -> item
+    end
+  end
 end

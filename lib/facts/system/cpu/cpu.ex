@@ -1,11 +1,17 @@
 defmodule ExFacts.System.CPU do
-  @moduledoc """
-  Handles all logic with regards to collecting metrics on the CPUs of the host. Returns a `ExFactsCPU.InfoStat` populated struct.
-  """
   alias ExFacts.System.CPU.InfoStat
   import ExFacts.Utils
   require Logger
 
+  @moduledoc """
+  Handles all logic with regards to collecting metrics on the CPUs of the host.
+
+  Direct calls can be made to every function in this module but that is strongly
+  discouraged. As the surface area of the API grows it suggested that only the
+  `cpu_info/0` function is used as the entry point.
+
+  `cpu_info/0` returns a `ExFacts.System.CPU.InfoStat` populated struct.
+  """
   @cpuinfo Application.get_env(:exfacts, :cpuinfo, "cpuinfo")
   @nproc Application.get_env(:exfacts, :nproc, "nproc")
 
@@ -25,6 +31,9 @@ defmodule ExFacts.System.CPU do
    end
   end
 
+  @doc """
+  Returns a properly formed struct containing data on the host systems cpu(s).
+  """
   @spec cpu_info :: {atom, [%InfoStat{}]} | binary
   def cpu_info do
     filename = host_proc(@cpuinfo)
@@ -62,7 +71,19 @@ defmodule ExFacts.System.CPU do
     data
   end
 
-  @spec split_data(original :: []) :: []
+  @spec finish_info(map) :: map
+  def finish_info(data) when is_map(data) do
+    for {key, val} <- data, into: %{} do
+      {String.to_atom(String.trim_leading(key, "cpu_")),  String.trim(val)}
+    end
+  end
+
+  @spec flatten_info(list, map) :: map
+  def flatten_info(list, m \\ %{})
+  def flatten_info([], m), do: m
+  def flatten_info(list, m), do: flatten_info(tl(list), Map.merge(m, hd(list)))
+
+  @spec split_data(original :: [String.t]) :: []
   def split_data(data) do
     i =
       data
@@ -76,18 +97,6 @@ defmodule ExFacts.System.CPU do
   @spec split_data(original :: list, interval :: integer) :: list
   def split_data(data, i) do
     Enum.chunk(data, i)
-  end
-
-  @spec flatten_info(list, map) :: map
-  def flatten_info(list, m \\ %{})
-  def flatten_info([], m), do: m
-  def flatten_info(list, m), do: flatten_info(tl(list), Map.merge(m, hd(list)))
-
-  @spec finish_info(map) :: map
-  def finish_info(data) when is_map(data) do
-    for {key, val} <- data, into: %{} do
-      {String.to_atom(String.trim_leading(key, "cpu_")),  String.trim(val)}
-    end
   end
 
   @spec populate_info(map) :: %ExFacts.System.CPU.InfoStat{}

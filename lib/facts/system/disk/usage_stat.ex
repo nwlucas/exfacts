@@ -13,26 +13,26 @@ defmodule ExFacts.System.Disk.UsageStat do
   @type t :: %ExFacts.System.Disk.UsageStat{
     path: binary,
     fs_type: binary,
-    total: float,
-    free: float,
-    used: float,
+    total: integer,
+    free: integer,
+    used: integer,
     used_percent: float,
-    inodes_total: float,
-    inodes_used: float,
-    inodes_free: float,
+    inodes_total: integer,
+    inodes_used: integer,
+    inodes_free: integer,
     inodes_used_percent: float
   }
 
   defstruct [
     path: "",
     fs_type: "",
-    total: 0.0,
-    free: 0.0,
-    used: 0.0,
+    total: 0,
+    free: 0,
+    used: 0,
     used_percent: 0.0,
-    inodes_total: 0.0,
-    inodes_used: 0.0,
-    inodes_free: 0.0,
+    inodes_total: 0,
+    inodes_used: 0,
+    inodes_free: 0,
     inodes_used_percent: 0.0
   ]
 end

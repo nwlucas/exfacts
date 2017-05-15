@@ -7,7 +7,9 @@ defmodule ExFacts.Constants do
     end
   end
 
-  @doc "Define a constant"
+  @doc """
+  Define a constant
+  """
   defmacro const(name, value) do
     quote do
       def unquote(name)(), do: unquote(value)
