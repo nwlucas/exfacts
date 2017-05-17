@@ -1,8 +1,5 @@
 defmodule ExFacts.System.Net do
   alias ExFacts.System.Net.InterfaceStat
-  import ExFacts.Utils
-  use Bitwise
-
   @moduledoc """
   Handles all logic with regards to collecting metrics on the interfaces of the host.
 
@@ -13,45 +10,51 @@ defmodule ExFacts.System.Net do
   `interfaces/0` returns a `ExFacts.System.CPU.InterfaceStat` populated struct.
   """
 
+  @proto_map %{"TCP" => 0x1, "UDP" => 0x2, "IPv4" => 0x2, "IPv6" => 0xa}
+
   @doc """
   Returns structs with data on the interfaces of the host. It serves as the main entry
   point to the `ExFacts.System.net` module.
+
+  Mainly a wapper around Erlang `:inet.getifaddrs()`
   """
-
-  @proto_map %{"TCP" => 0x1, "UDP" => 0x2, "IPv4" => 0x2, "IPv6" => 0xa}
-
+  @spec interfaces :: [%ExFacts.System.Net.InterfaceStat{}]
   def interfaces do
-    path = host_sys("/class/net")
+    {:ok, ifis} = :inet.getifaddrs()
 
-    is =
-      path
-      |> File.ls!
-      |> Enum.map(fn x -> %InterfaceStat
-        {
-          name: x,
-          hardware_addr: read_file(path <> "/#{x}/address") |> String.strip(),
-          mtu: read_file(path <> "/#{x}/mtu") |> String.strip |> String.to_integer(),
-          flags: get_sys_flags(x)
-        } end)
+    ifs = ifis |> Enum.map(&parse_ifis/1)
 
-    is
+    ifs
   end
 
-  @spec get_sys_flags(binary) :: [binary]
-  defp get_sys_flags(interface) do
-    path = host_sys("/class/net/" <> interface)
+  @spec parse_ifis(tuple) :: %ExFacts.System.Net.InterfaceStat{}
+  defp parse_ifis(ifi) do
+    {int_name, int_options} = ifi
 
-    iff_flags = File.read!(path <> "/flags")
-                |> String.strip
-                |> String.trim_leading("0x")
-                |> String.to_integer(16)
+    flags =
+      int_options[:flags]
+      |> Enum.map(&Atom.to_string/1)
 
-    flags = if (iff_flags &&& 1) != 0, do: ["UP"]
-    flags = if (iff_flags &&& 2) != 0, do: flags ++ ["BROADCAST"], else: flags ++ []
-    flags = if (iff_flags &&& 3) != 0, do: flags ++ ["LOOPBACK"], else: flags ++ []
-    flags = if (iff_flags &&& 4) != 0, do: flags ++ ["POINTTOPOINT"], else: flags ++ []
-    flags = if (iff_flags &&& 5) != 0, do: flags ++ ["MULTICAST"], else: flags ++ []
+    hwaddr =
+      int_options[:hwaddr]
+      |> Enum.map(& Integer.to_string(&1, 16))
+      |> Enum.map(fn x -> if String.length(x) <= 1, do: String.pad_leading(x, 2, "0"), else: x end)
+      |> Enum.reduce(fn left, right -> right <> ":" <> left end)
 
-    flags
+    addrs =
+      int_options
+      |> Enum.reduce_while([], &addrs_sifter/2)
+
+    %InterfaceStat{
+      name: to_string(int_name),
+      hardware_addr: hwaddr,
+      flags: flags
+    }
+  end
+
+  defp addrs_sifter(orig, acc) do
+    {a, iter} = if Keyword.has_key?(orig, :addr), do: Keyword.pop_first(orig, :addr)
+    {n, iter} = if Keyword.has_key?(orig, :netmask), do: Keyword.pop_first(orig, :netmask)
+    {b, iter} = if Keyword.has_key?(orig, :broadcast), do: Keyword.pop_first(orig, :broadcast)
   end
 end

@@ -15,15 +15,15 @@ defmodule ExFacts.System.Net.InterfaceStat do
     mtu: integer,
     name: binary,
     hardware_addr: binary,
-    flags: [binary],
-    addrs: [%ExFacts.System.Net.InterfaceAddr{}]
+    addrs: [%ExFacts.System.Net.InterfaceAddr{}],
+    flags: [binary]
   }
 
   defstruct [
     mtu: 0,
     name: "",
     hardware_addr: "",
-    flags: [""],
-    addrs: %ExFacts.System.Net.InterfaceAddr{}
+    addrs: [%ExFacts.System.Net.InterfaceAddr{}],
+    flags: [""]
   ]
 end
