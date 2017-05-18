@@ -9,14 +9,16 @@ defmodule ExFacts.System.Net.InterfaceAddr do
   @derive [Poison.Encoder]
 
   @type t :: %__MODULE__{
-    addr: binary,
+    address: binary,
     broadcast: binary,
-    netmask: binary
+    netmask: binary,
+    destination: binary
   }
 
   defstruct [
-    addr: "",
+    address: "",
     broadcast: "",
-    netmask: ""
+    netmask: "",
+    destination: ""
   ]
 end
