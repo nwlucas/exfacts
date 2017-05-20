@@ -1,7 +1,7 @@
 defmodule ExFacts.Mixfile do
   use Mix.Project
 
-  @version 1.9
+  @version "0.1.9"
 
   def project do
     [
