@@ -1,5 +1,10 @@
 defmodule ExFacts.System.Net do
-  alias ExFacts.System.Net.{InterfaceStat, InterfaceAddr, IOCounterStat}
+  alias ExFacts.System.Net.{
+    InterfaceStat,
+    InterfaceAddr,
+    IOCounterStat,
+    ProtocolCounterStat
+  }
   import ExFacts.Utils
   @moduledoc """
   Handles all logic with regards to collecting metrics on the interfaces of the host.
@@ -13,6 +18,7 @@ defmodule ExFacts.System.Net do
   """
 
   @proto_map %{"TCP" => 0x1, "UDP" => 0x2, "IPv4" => 0x2, "IPv6" => 0xa}
+  @net_protos ~w[ip icmp icmpmsg tcp udp udplite]
 
   @doc """
   Returns structs with data on the interfaces of the host. It serves as the main entry
@@ -64,6 +70,7 @@ defmodule ExFacts.System.Net do
     tally
   end
 
+  @doc false
   @spec parse_io_counters(Tuple.t, [] | [%__MODULE__.IOCounterStat{}]) :: [%__MODULE__.IOCounterStat{}]
   defp parse_io_counters(data, acc) do
     {if_name, if_stats} = data
@@ -85,6 +92,13 @@ defmodule ExFacts.System.Net do
 
     acc = acc ++ List.wrap(nic)
     acc
+  end
+
+  def proto_counters(protocols \\ @net_protos) do
+    filename = host_proc("net/snmp")
+    content = read_file(filename, sane: true)
+
+    stats = %ProtocolCounterStat{}
   end
 
   @doc false
