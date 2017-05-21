@@ -11,7 +11,7 @@ defmodule ExFacts.System do
   """
   @spec gather_system(Keyword.t) :: binary
   def gather_system(opts \\ []) do
-    defaults = [partitions: true, cpus: true]
+    defaults = [partitions: true, cpus: true, as: :term]
     options = Keyword.merge(defaults, opts)
 
     {:ok, c} = CPU.cpu_info()
@@ -20,6 +20,7 @@ defmodule ExFacts.System do
     {:ok, load_avg} = Load.avg()
     {:ok, load_misc} = Load.misc()
     {:ok, %{virtual: vm, swap: sm}} = Mem.memory_info()
+    {:ok, n} = Net.interfaces()
 
     data =
       %{data:
@@ -34,11 +35,18 @@ defmodule ExFacts.System do
           load: %{
             average: load_avg,
             misc: load_misc
-          }
+          },
+          interfaces: n
         }
       }
 
-    Poison.encode! data, strict_keys: true
+    return =
+      case options[:as] do
+        :term -> data
+        :json -> Poison.encode! data, strict_keys: true
+      end
+
+    return
   end
 
   @spec transform_cpu([%CPU.InfoStat{}]) :: Map.t

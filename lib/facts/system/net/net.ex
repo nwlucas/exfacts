@@ -30,7 +30,8 @@ defmodule ExFacts.System.Net do
   def interfaces do
     {:ok, ifis} = :inet.getifaddrs()
     ifs = ifis |> Enum.map(&parse_ifis/1)
-    ifs
+
+    {:ok, ifs}
   end
 
   def io_counters(pernic \\ false) do
